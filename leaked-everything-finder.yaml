@@ -1,0 +1,362 @@
+id: leaked-everything-finder
+
+info:
+  name: Ultimate Leaked Everything Finder - 50+ Detection Methods
+  author: reewardius
+  severity: critical
+  description: Comprehensive template combining 50+ techniques to find leaked secrets, credentials, misconfigurations, and sensitive data exposure
+  metadata:
+    verified: true
+    max-request: 150
+    tags: leaked,secrets,credentials,exposure,cloud,aws,azure,gcp,github,api,database
+  classification:
+    cvss-metrics: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:N/A:N
+    cvss-score: 8.6
+
+http:
+  - method: GET
+    path:
+      # Standard Secret Files
+      - '{{BaseURL}}/.env'
+      - '{{BaseURL}}/.env.local'
+      - '{{BaseURL}}/.env.production'
+      - '{{BaseURL}}/.env.development'
+      - '{{BaseURL}}/.aws/credentials'
+      - '{{BaseURL}}/.git/config'
+      - '{{BaseURL}}/.git/HEAD'
+      - '{{BaseURL}}/.gitignore'
+      - '{{BaseURL}}/.docker/config.json'
+      - '{{BaseURL}}/.npmrc'
+      - '{{BaseURL}}/.dockerenv'
+      - '{{BaseURL}}/config.php'
+      - '{{BaseURL}}/configuration.php'
+      - '{{BaseURL}}/settings.php'
+      - '{{BaseURL}}/wp-config.php'
+      - '{{BaseURL}}/web.config'
+      - '{{BaseURL}}/appsettings.json'
+      - '{{BaseURL}}/secrets.yml'
+      - '{{BaseURL}}/secret.yaml'
+      - '{{BaseURL}}/key.pem'
+      - '{{BaseURL}}/private.pem'
+      - '{{BaseURL}}/id_rsa'
+      - '{{BaseURL}}/id_dsa'
+      - '{{BaseURL}}/ssh/id_rsa'
+      - '{{BaseURL}}/ssh/authorized_keys'
+      - '{{BaseURL}}/jenkins/credentials.xml'
+      - '{{BaseURL}}/jenkins/config.xml'
+      - '{{BaseURL}}/.circleci/config.yml'
+      - '{{BaseURL}}/.github/workflows/'
+      - '{{BaseURL}}/.gitlab-ci.yml'
+      - '{{BaseURL}}/deploy.yml'
+      - '{{BaseURL}}/docker-compose.yml'
+      - '{{BaseURL}}/docker-compose.yaml'
+      - '{{BaseURL}}/kubernetes/secret.yaml'
+      - '{{BaseURL}}/kubeconfig'
+      - '{{BaseURL}}/.terraform/terraform.tfstate'
+      - '{{BaseURL}}/terraform.tfvars'
+      - '{{BaseURL}}/serverless.yml'
+      - '{{BaseURL}}/cloudformation/template.yaml'
+      - '{{BaseURL}}/ansible/vars.yml'
+      - '{{BaseURL}}/puppet/hiera.yaml'
+      
+      # Cloud Metadata
+      - '{{BaseURL}}/latest/meta-data/'
+      - '{{BaseURL}}/metadata/v1/'
+      - '{{BaseURL}}/computeMetadata/v1/'
+      
+      # API Endpoints
+      - '{{BaseURL}}/api/v1/status'
+      - '{{BaseURL}}/api/v1/config'
+      - '{{BaseURL}}/api/v1/secrets'
+      - '{{BaseURL}}/swagger.json'
+      - '{{BaseURL}}/openapi.json'
+      - '{{BaseURL}}/swagger-ui.html'
+      - '{{BaseURL}}/v2/api-docs'
+      - '{{BaseURL}}/graphql'
+      - '{{BaseURL}}/graphiql'
+      - '{{BaseURL}}/admin'
+      - '{{BaseURL}}/administrator'
+      - '{{BaseURL}}/phpmyadmin'
+      - '{{BaseURL}}/phpMyAdmin'
+      - '{{BaseURL}}/mysql'
+      - '{{BaseURL}}/db'
+      - '{{BaseURL}}/cgi-bin/'
+      - '{{BaseURL}}/backup/'
+      - '{{BaseURL}}/bak/'
+      - '{{BaseURL}}/old/'
+      - '{{BaseURL}}/temp/'
+      - '{{BaseURL}}/tmp/'
+      
+      # Source Code Repository
+      - '{{BaseURL}}/src/'
+      - '{{BaseURL}}/source/'
+      - '{{BaseURL}}/code/'
+      - '{{BaseURL}}/app/'
+      - '{{BaseURL}}/public/'
+      - '{{BaseURL}}/assets/'
+      - '{{BaseURL}}/uploads/'
+      - '{{BaseURL}}/files/'
+      - '{{BaseURL}}/downloads/'
+
+    matchers-condition: or
+    matchers:
+      # AWS SECRETS
+      - type: regex
+        part: body
+        regex:
+          - '(?:AKIA|ABIA|ACCA)[0-9A-Z]{16}'
+          - '(?:AWS|aws)_(?:ACCESS|SECRET)_(?:KEY|ID)["\s:=]+[A-Za-z0-9/+=]{16,}'
+          - 'arn:aws:iam::[0-9]{12}:[A-Za-z0-9_/+=,.@-]+'
+          - 'arn:aws:s3:::[\w.-]+'
+          - 's3://[\w.-]+'
+          
+      # AZURE SECRETS
+      - type: regex
+        part: body
+        regex:
+          - 'Server=tcp:[\w.-]+\.database\.windows\.net,1433[^"]+Password=[^"\s]+'
+          - 'DefaultEndpointsProtocol=https;AccountName=[^;]+;AccountKey=[^;]+'
+          - 'AzureWebJobsStorage=[^;]+;'
+          - 'https://[\w-]+\.(?:blob|queue|table|file)\.core\.windows\.net/[^"\s]+'
+          - 'ConnectionString:[\s]*["\']?[^"\']*AccountKey=[^"\']+'
+          
+      # GCP/GSUITE SECRETS
+      - type: regex
+        part: body
+        regex:
+          - '"type":\s*"service_account"'
+          - '"project_id":\s*"[^"]+"'
+          - '"private_key_id":\s*"[^"]+"'
+          - '"private_key":\s*"-----BEGIN PRIVATE KEY-----"'
+          - 'client_secret_[^"]+\.json'
+          - 'GOOGLE_APPLICATION_CREDENTIALS=[^"\s]+'
+          
+      # GITHUB SECRETS
+      - type: regex
+        part: body
+        regex:
+          - 'ghp_[A-Za-z0-9]{36}'
+          - 'gho_[A-Za-z0-9]{36}'
+          - 'ghu_[A-Za-z0-9]{36}'
+          - 'ghs_[A-Za-z0-9]{36}'
+          - 'github_pat_[A-Za-z0-9]{22}_[A-Za-z0-9]{59}'
+          - 'glpat-[A-Za-z0-9_-]{20}'
+          
+      # DATABASE CONNECTIONS
+      - type: regex
+        part: body
+        regex:
+          - 'mongodb(?:\+srv)?://[^"\s]+'
+          - 'mysql://[^"\s]+'
+          - 'postgresql://[^"\s]+'
+          - 'redis://[^"\s]+'
+          - 'elasticsearch://[^"\s]+'
+          - 'couchdb://[^"\s]+'
+          - 'neo4j://[^"\s]+'
+          - 'jdbc:mysql://[^"\s]+'
+          - 'jdbc:postgresql://[^"\s]+'
+          
+      # API KEYS & TOKENS
+      - type: regex
+        part: body
+        regex:
+          - 'sk-[A-Za-z0-9]{48}'  # OpenAI
+          - 'SG\.[A-Za-z0-9_-]{22}\.[A-Za-z0-9_-]{43}'  # SendGrid
+          - 'pk_live_[A-Za-z0-9]{24,}'  # Stripe
+          - 'sk_live_[A-Za-z0-9]{24,}'  # Stripe
+          - 'xox[bap]-[0-9]+-[0-9]+-[0-9a-z]+'  # Slack
+          - 'ya29\.[A-Za-z0-9_-]+'  # Google OAuth
+          - 'dop_v1_[A-Za-z0-9]{64}'  # DigitalOcean
+          - 'EA[A-Za-z0-9]{50,}'  # Facebook
+          - 'gl-[A-Za-z0-9_-]{20}'  # GitLab
+          - 'npm_[A-Za-z0-9]{36}'  # NPM
+          - 'pypi-[A-Za-z0-9_-]{30,}'  # PyPI
+          - '[A-Za-z0-9]{32}-us[0-9]{1,2}'  # Mailchimp
+          - 'hvs\.[A-Za-z0-9_-]{24}'  # HashiCorp Vault
+          
+      # JWT TOKENS
+      - type: regex
+        part: body
+        regex:
+          - 'eyJ[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+'
+          
+      # SSH KEYS
+      - type: regex
+        part: body
+        regex:
+          - '-----BEGIN (?:RSA|DSA|EC|OPENSSH) PRIVATE KEY-----'
+          - '-----BEGIN SSH2 ENCRYPTED PRIVATE KEY-----'
+          
+      # PASSWORD PATTERNS
+      - type: regex
+        part: body
+        regex:
+          - '(?:password|passwd|pwd|secret|key|token|auth|api_key|apikey)[\s]*[:=][\s]*["\']?[^"\'\s]{8,}["\']?'
+          - 'Authorization: Bearer [A-Za-z0-9._-]+'
+          - 'Basic [A-Za-z0-9+/=]{20,}'
+          - 'Bearer [A-Za-z0-9._-]+'
+          - 'X-API-Key: [A-Za-z0-9-]+'
+          
+      # CLOUD METADATA INDICATORS
+      - type: word
+        part: body
+        words:
+          - 'instance-id'
+          - 'ami-id'
+          - 'availability-zone'
+          - 'meta-data'
+          - 'computeMetadata'
+          - 'project-id'
+          - 'zone'
+          - 'region'
+          - 'vault'
+          - 'secret'
+          - 'private_key'
+          - 'passphrase'
+          - 'credentials'
+          - 'password'
+          - 'username'
+        condition: or
+        
+      # CONFIGURATION FILES
+      - type: word
+        part: body
+        words:
+          - 'DATABASE_URL'
+          - 'DB_PASSWORD'
+          - 'API_KEY'
+          - 'SECRET_KEY'
+          - 'ENCRYPTION_KEY'
+          - 'SALT'
+          - 'HASH'
+          - 'OAUTH_TOKEN'
+          - 'REFRESH_TOKEN'
+          - 'ACCESS_TOKEN'
+          - 'STRIPE'
+          - 'PAYPAL'
+          - 'MAILGUN'
+          - 'SENDGRID'
+          - 'TWILIO'
+          - 'NEXMO'
+          - 'OPENAI'
+          - 'ANTHROPIC'
+          - 'COHERE'
+          - 'HUGGINGFACE'
+        condition: or
+        
+      # INTERNAL IP ADDRESSES
+      - type: regex
+        part: body
+        regex:
+          - '10\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
+          - '172\.(?:1[6-9]|2[0-9]|3[01])\.[0-9]{1,3}\.[0-9]{1,3}'
+          - '192\.168\.[0-9]{1,3}\.[0-9]{1,3}'
+          - '127\.0\.0\.1'
+          - '0\.0\.0\.0'
+          
+      # URLS WITH CREDENTIALS
+      - type: regex
+        part: body
+        regex:
+          - 'https?://[^/\s:@]+:[^/\s:@]+@[^/\s]+'
+          - 'mongodb://[^:\s]+:[^@\s]+@'
+          - 'redis://[^:\s]+:[^@\s]+@'
+          
+      # PHP SENSITIVE FUNCTIONS (SAST)
+      - type: word
+        part: body
+        words:
+          - 'eval('
+          - 'system('
+          - 'exec('
+          - 'shell_exec('
+          - 'passthru('
+          - 'popen('
+          - 'proc_open('
+          - 'mysql_query('
+          - 'mysqli_query('
+          - 'pg_query('
+          - 'file_get_contents('
+          - 'include('
+          - 'require('
+          - 'curl_exec('
+        condition: or
+        
+      # PYTHON SENSITIVE FUNCTIONS
+      - type: word
+        part: body
+        words:
+          - 'exec('
+          - 'eval('
+          - '__import__('
+          - 'compile('
+          - 'pickle.loads('
+          - 'yaml.load('
+          - 'os.system('
+          - 'subprocess.Popen('
+          - 'subprocess.call('
+        condition: or
+        
+      # JAVASCRIPT SENSITIVE FUNCTIONS
+      - type: word
+        part: body
+        words:
+          - 'eval('
+          - 'Function('
+          - 'setTimeout('
+          - 'setInterval('
+          - 'document.write('
+          - 'innerHTML = '
+          - 'outerHTML = '
+          - 'localStorage.setItem('
+          - 'sessionStorage.setItem('
+        condition: or
+
+    # Additional Detection for Response Headers
+    matchers:
+      - type: word
+        part: header
+        words:
+          - 'X-Powered-By'
+          - 'Server: '
+          - 'X-AspNet-Version'
+          - 'X-AspNetMvc-Version'
+          - 'X-Generator'
+          - 'X-Drupal-Dynamic-Cache'
+          - 'X-Drupal-Cache'
+          - 'X-Varnish'
+          - 'X-Server'
+        condition: or
+        
+      # Email Addresses
+      - type: regex
+        part: body
+        regex:
+          - '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+          
+      # Phone Numbers
+      - type: regex
+        part: body
+        regex:
+          - '\+\d{1,3}\s?\d{3,14}'
+          
+      # Credit Card Numbers (Partial)
+      - type: regex
+        part: body
+        regex:
+          - '\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|6(?:011|5[0-9]{2})[0-9]{12})\b'
+
+    extractors:
+      - type: regex
+        name: extracted_secrets
+        part: body
+        regex:
+          - '(?:AWS|aws)_(?:ACCESS|SECRET)_(?:KEY|ID)[\s:=]+([A-Za-z0-9/+=]{16,})'
+          - '(?:password|passwd|pwd|secret|key|token|api_key)[\s:=]+["\']?([^"\'\s]{8,})["\']?'
+          - '(?:AKIA|ABIA|ACCA)([0-9A-Z]{16})'
+          - '(?:ghp|gho|ghu|ghs)_([A-Za-z0-9]{36})'
+          - 'Authorization: Bearer ([A-Za-z0-9._-]+)'
+          - 'mongodb://([^:]+:[^@]+)@'
+          - 'mysql://([^:]+:[^@]+)@'
+          - 'postgresql://([^:]+:[^@]+)@'
+          - 'redis://([^:]+:[^@]+)@'
