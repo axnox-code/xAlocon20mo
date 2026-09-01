@@ -1,0 +1,21 @@
+id: aws-iam-role-arn
+
+info:
+  name: AWS IAM Role ARN Disclosure
+  author: reewardius
+  severity: medium
+  metadata:
+    verified: true
+    max-request: 1
+  tags: disclosure,aws,exposure,amazon,iam
+
+http:
+  - method: GET
+    path:
+      - '{{BaseURL}}'
+
+    matchers:
+      - type: regex
+        part: body
+        regex:
+          - 'arn:aws:iam::[0-9]{12}:role/[A-Za-z0-9_+=,.@-]+'
