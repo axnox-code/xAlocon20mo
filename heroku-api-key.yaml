@@ -1,0 +1,21 @@
+id: heroku-api-key
+
+info:
+  name: Heroku API Key Disclosure
+  author: reewardius
+  severity: high
+  metadata:
+    verified: true
+    max-request: 1
+  tags: disclosure,heroku,exposure,cloud
+
+http:
+  - method: GET
+    path:
+      - '{{BaseURL}}'
+
+    matchers:
+      - type: regex
+        part: body
+        regex:
+          - '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
