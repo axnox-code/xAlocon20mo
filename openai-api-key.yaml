@@ -1,0 +1,21 @@
+id: openai-api-key
+
+info:
+  name: OpenAI API Key Disclosure
+  author: reewardius
+  severity: high
+  metadata:
+    verified: true
+    max-request: 1
+  tags: disclosure,openai,exposure,ai
+
+http:
+  - method: GET
+    path:
+      - '{{BaseURL}}'
+
+    matchers:
+      - type: regex
+        part: body
+        regex:
+          - 'sk-[A-Za-z0-9]{48}'
