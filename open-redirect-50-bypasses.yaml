@@ -1,0 +1,154 @@
+id: open-redirect-50-bypasses
+
+info:
+  name: Open Redirect - 50 Bypass Payloads
+  author: reewardius
+  severity: medium
+  description: Detects open redirect vulnerabilities using 50 different bypass techniques
+  metadata:
+    verified: true
+    max-request: 50
+    fofa-query: "title"
+    shodan-query: "http.title"
+  tags: open-redirect,redirect,ssrf,bypass,url
+
+http:
+  - method: GET
+    path:
+      # Standard Redirect Parameters
+      - '{{BaseURL}}?url=https://evil.com'
+      - '{{BaseURL}}?redirect=https://evil.com'
+      - '{{BaseURL}}?return=https://evil.com'
+      - '{{BaseURL}}?next=https://evil.com'
+      - '{{BaseURL}}?redir=https://evil.com'
+      - '{{BaseURL}}?out=https://evil.com'
+      - '{{BaseURL}}?view=https://evil.com'
+      - '{{BaseURL}}?dir=https://evil.com'
+      - '{{BaseURL}}?show=https://evil.com'
+      - '{{BaseURL}}?page=https://evil.com'
+      - '{{BaseURL}}?file=https://evil.com'
+      - '{{BaseURL}}?document=https://evil.com'
+      - '{{BaseURL}}?folder=https://evil.com'
+      - '{{BaseURL}}?site=https://evil.com'
+      - '{{BaseURL}}?host=https://evil.com'
+      - '{{BaseURL}}?domain=https://evil.com'
+      - '{{BaseURL}}?link=https://evil.com'
+      - '{{BaseURL}}?src=https://evil.com'
+      - '{{BaseURL}}?source=https://evil.com'
+      - '{{BaseURL}}?target=https://evil.com'
+      
+      # Double URL Encoding
+      - '{{BaseURL}}?url=https%3A%2F%2Fevil.com'
+      - '{{BaseURL}}?redirect=https%3A%2F%2Fevil.com'
+      - '{{BaseURL}}?return=https%3A%2F%2Fevil.com'
+      
+      # Using @ Symbol (Basic Auth)
+      - '{{BaseURL}}?url=https://evil.com@google.com'
+      - '{{BaseURL}}?redirect=https://evil.com@google.com'
+      - '{{BaseURL}}?return=https://evil.com@google.com'
+      
+      # Using // (Protocol Relative)
+      - '{{BaseURL}}?url=//evil.com'
+      - '{{BaseURL}}?redirect=//evil.com'
+      - '{{BaseURL}}?return=//evil.com'
+      
+      # Using backslash
+      - '{{BaseURL}}?url=\evil.com'
+      - '{{BaseURL}}?redirect=\evil.com'
+      
+      # Using %0a (Newline)
+      - '{{BaseURL}}?url=https://google.com%0aevIL.com'
+      - '{{BaseURL}}?redirect=https://google.com%0aevIL.com'
+      
+      # Using %00 (Null Byte)
+      - '{{BaseURL}}?url=https://google.com%00evil.com'
+      - '{{BaseURL}}?redirect=https://google.com%00evil.com'
+      
+      # Using Unicode
+      - '{{BaseURL}}?url=https://evil。com'
+      - '{{BaseURL}}?redirect=https://evil。com'
+      - '{{BaseURL}}?url=https://evilⵓcom'
+      - '{{BaseURL}}?redirect=https://evilⵓcom'
+      
+      # Using Multiple Slashes
+      - '{{BaseURL}}?url=https://evil.com//google.com'
+      - '{{BaseURL}}?url=https:evil.com'
+      - '{{BaseURL}}?url=https;//evil.com'
+      
+      # Using IP Address
+      - '{{BaseURL}}?url=http://127.0.0.1'
+      - '{{BaseURL}}?url=http://169.254.169.254'
+      - '{{BaseURL}}?url=http://0.0.0.0'
+      
+      # Using Different Protocols
+      - '{{BaseURL}}?url=ftp://evil.com'
+      - '{{BaseURL}}?url=gopher://evil.com'
+      - '{{BaseURL}}?url=dict://evil.com'
+      
+      # Using Data URI
+      - '{{BaseURL}}?url=data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=='
+      
+      # Using Javascript
+      - '{{BaseURL}}?url=javascript:alert(1)'
+      - '{{BaseURL}}?url=jAvAsCrIpT:alert(1)'
+      
+      # Using Fragment
+      - '{{BaseURL}}?url=https://evil.com#@google.com'
+      - '{{BaseURL}}?url=https://evil.com#google.com'
+      
+      # Using Question Mark
+      - '{{BaseURL}}?url=https://evil.com?google.com'
+      - '{{BaseURL}}?url=https://evil.com?@google.com'
+      
+      # Using @ with different positions
+      - '{{BaseURL}}?url=https://google.com@evil.com'
+      - '{{BaseURL}}?url=https://google.com:80@evil.com'
+      
+      # Using Port
+      - '{{BaseURL}}?url=http://evil.com:8080'
+      - '{{BaseURL}}?url=http://evil.com:443'
+      
+      # Using Subdomain
+      - '{{BaseURL}}?url=http://evil.evil.com'
+      - '{{BaseURL}}?url=http://sub.evil.com'
+      
+      # Using IDN Homograph
+      - '{{BaseURL}}?url=https://аррӏе.com'
+      - '{{BaseURL}}?url=https://gооgle.com'
+      
+      # Using Mixed Case
+      - '{{BaseURL}}?url=HTTPS://EvIl.CoM'
+      
+      # Using Tab
+      - '{{BaseURL}}?url=https://evil.com%09google.com'
+      
+      # Using Path Traversal
+      - '{{BaseURL}}?url=//evil.com/../../google.com'
+      
+      # Using CRLF
+      - '{{BaseURL}}?url=https://evil.com%0d%0agoogle.com'
+
+    matchers-condition: and
+    matchers:
+      - type: status
+        status:
+          - 301
+          - 302
+          - 303
+          - 307
+          - 308
+
+      - type: word
+        part: header
+        words:
+          - 'Location:'
+          - 'evil.com'
+          - '127.0.0.1'
+          - '169.254.169.254'
+        condition: or
+
+      - type: regex
+        part: header
+        regex:
+          - 'Location:\s*(https?://|//)[^/]*evil\.com'
+          - 'Location:\s*//evil\.com'
