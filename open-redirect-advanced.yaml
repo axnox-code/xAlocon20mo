@@ -1,0 +1,122 @@
+id: open-redirect-advanced
+
+info:
+  name: Open Redirect - Advanced Bypass Techniques
+  author: reewardius
+  severity: high
+  description: Detects open redirect with advanced bypass techniques including WAF bypass
+  metadata:
+    verified: true
+    max-request: 30
+  tags: open-redirect,redirect,waf-bypass,ssrf,oauth
+
+http:
+  - method: GET
+    path:
+      # OAuth Redirect Bypass
+      - '{{BaseURL}}?redirect_uri=https://evil.com'
+      - '{{BaseURL}}?callback=https://evil.com'
+      - '{{BaseURL}}?continue=https://evil.com'
+      - '{{BaseURL}}?return_to=https://evil.com'
+      - '{{BaseURL}}?return_url=https://evil.com'
+      - '{{BaseURL}}?success_url=https://evil.com'
+      - '{{BaseURL}}?failure_url=https://evil.com'
+      - '{{BaseURL}}?cancel_url=https://evil.com'
+      - '{{BaseURL}}?error_url=https://evil.com'
+      
+      # WAF Bypass Techniques
+      - '{{BaseURL}}?url=https://evil.com%2e'
+      - '{{BaseURL}}?url=https://evil.com%2f'
+      - '{{BaseURL}}?url=https://evil.com%5c'
+      - '{{BaseURL}}?url=https://evil.com%3f'
+      - '{{BaseURL}}?url=https://evil.com%23'
+      - '{{BaseURL}}?url=https://evil.com%20'
+      - '{{BaseURL}}?url=https://evil.com%0a'
+      - '{{BaseURL}}?url=https://evil.com%0d'
+      
+      # Using Punycode
+      - '{{BaseURL}}?url=https://xn--e1awd7f.com'
+      - '{{BaseURL}}?url=https://xn--80ak6aa92e.com'
+      
+      # Using URL Shortener Services
+      - '{{BaseURL}}?url=https://bit.ly/2xxxxxx'
+      - '{{BaseURL}}?url=https://tinyurl.com/xxxxx'
+      - '{{BaseURL}}?url=https://goo.gl/xxxxx'
+      
+      # Using Localhost Variations
+      - '{{BaseURL}}?url=http://localhost'
+      - '{{BaseURL}}?url=http://127.0.0.1:8080'
+      - '{{BaseURL}}?url=http://[::1]'
+      - '{{BaseURL}}?url=http://0x7f000001'
+      - '{{BaseURL}}?url=http://0177.0.0.1'
+      - '{{BaseURL}}?url=http://2130706433'
+      
+      # Using DNS Rebinding Patterns
+      - '{{BaseURL}}?url=http://1.1.1.1.nip.io'
+      - '{{BaseURL}}?url=http://127.0.0.1.nip.io'
+      
+      # Using Alternative Encoding
+      - '{{BaseURL}}?url=%68%74%74%70%73%3a%2f%2f%65%76%69%6c%2e%63%6f%6d'
+      - '{{BaseURL}}?url=%68%74%74%70%3a%2f%2f%65%76%69%6c%2e%63%6f%6d'
+      
+      # Using Unicode Encoding
+      - '{{BaseURL}}?url=\u0068\u0074\u0074\u0070\u0073\u003a\u002f\u002f\u0065\u0076\u0069\u006c\u002e\u0063\u006f\u006d'
+      
+      # Using HTML Entities
+      - '{{BaseURL}}?url=https://evil.com'
+      
+      # Using Null in Domain
+      - '{{BaseURL}}?url=https://evil%00.com'
+      - '{{BaseURL}}?url=https://evil%01.com'
+      
+      # Using Whitespace
+      - '{{BaseURL}}?url=https://evil.com%20@google.com'
+      - '{{BaseURL}}?url=https://evil.com%09@google.com'
+      
+      # Multiple Parameter Injection
+      - '{{BaseURL}}?redirect=https://evil.com&next=google.com'
+      - '{{BaseURL}}?url=https://evil.com&redirect=https://google.com'
+      
+      # Using JSONP Callback
+      - '{{BaseURL}}?callback=https://evil.com'
+      - '{{BaseURL}}?jsonp=https://evil.com'
+      
+      # Using Iframe
+      - '{{BaseURL}}?url=https://evil.com/iframe'
+      
+      # Using OpenID
+      - '{{BaseURL}}?openid.return_to=https://evil.com'
+      
+      # Using SAML
+      - '{{BaseURL}}?SAMLRequest=https://evil.com'
+      
+      # Using WebSocket
+      - '{{BaseURL}}?url=ws://evil.com'
+      - '{{BaseURL}}?url=wss://evil.com'
+
+    matchers-condition: and
+    matchers:
+      - type: status
+        status:
+          - 301
+          - 302
+          - 303
+          - 307
+          - 308
+
+      - type: word
+        part: header
+        words:
+          - 'Location:'
+          - 'evil.com'
+          - 'localhost'
+          - '127.0.0.1'
+          - '0.0.0.0'
+        condition: or
+
+      - type: regex
+        part: header
+        regex:
+          - 'Location:\s*(?:https?|ftp|gopher|dict|ws|wss)://[^/]*evil\.com'
+          - 'Location:\s*//[^/]*evil\.com'
+          - 'Location:\s*https?://[^/]*\.nip\.io'
