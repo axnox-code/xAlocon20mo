@@ -1,0 +1,21 @@
+id: facebook-access-token
+
+info:
+  name: Facebook Access Token Disclosure
+  author: reewardius
+  severity: high
+  metadata:
+    verified: true
+    max-request: 1
+  tags: disclosure,facebook,exposure,social-media
+
+http:
+  - method: GET
+    path:
+      - '{{BaseURL}}'
+
+    matchers:
+      - type: regex
+        part: body
+        regex:
+          - 'EA[A-Za-z0-9]{50,}'
