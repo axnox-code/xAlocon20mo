@@ -1,0 +1,885 @@
+id: api-endpoints-mega-finder
+
+info:
+  name: MEGA API Endpoint Discovery - 500+ Endpoints with Smart Detection
+  author: reewardius
+  severity: info
+  description: Comprehensive API endpoint discovery with 500+ endpoints, version detection, tech fingerprinting, and response analysis
+  metadata:
+    verified: true
+    max-request: 520
+    fofa-query: 'header="application/json" || body="swagger" || body="openapi"'
+    shodan-query: 'http.component:"swagger" || http.component:"api"'
+  tags: api,discovery,recon,enumeration,swagger,openapi,rest,graphql
+
+http:
+  - method: GET
+    path:
+      # ============ STANDARD API PATHS ============
+      - "{{BaseURL}}/api"
+      - "{{BaseURL}}/api/"
+      - "{{BaseURL}}/api/v1"
+      - "{{BaseURL}}/api/v2"
+      - "{{BaseURL}}/api/v3"
+      - "{{BaseURL}}/api/v4"
+      - "{{BaseURL}}/api/v5"
+      - "{{BaseURL}}/api/v6"
+      - "{{BaseURL}}/api/v7"
+      - "{{BaseURL}}/api/v8"
+      - "{{BaseURL}}/api/v9"
+      - "{{BaseURL}}/api/v10"
+      - "{{BaseURL}}/api/latest"
+      - "{{BaseURL}}/api/current"
+      - "{{BaseURL}}/api/beta"
+      - "{{BaseURL}}/api/alpha"
+      - "{{BaseURL}}/api/staging"
+      - "{{BaseURL}}/api/production"
+      - "{{BaseURL}}/api/dev"
+      - "{{BaseURL}}/api/test"
+      - "{{BaseURL}}/api/qa"
+      
+      # ============ REST PATHS ============
+      - "{{BaseURL}}/rest"
+      - "{{BaseURL}}/rest/"
+      - "{{BaseURL}}/rest/v1"
+      - "{{BaseURL}}/rest/v2"
+      - "{{BaseURL}}/rest/v3"
+      - "{{BaseURL}}/rest/latest"
+      - "{{BaseURL}}/rest/api"
+      - "{{BaseURL}}/rest/api/v1"
+      - "{{BaseURL}}/rest/api/v2"
+      - "{{BaseURL}}/rest/api/v3"
+      - "{{BaseURL}}/rest/admin"
+      - "{{BaseURL}}/rest/public"
+      - "{{BaseURL}}/rest/private"
+      
+      # ============ GRAPHQL PATHS ============
+      - "{{BaseURL}}/graphql"
+      - "{{BaseURL}}/graphql/"
+      - "{{BaseURL}}/graphiql"
+      - "{{BaseURL}}/graphiql/"
+      - "{{BaseURL}}/playground"
+      - "{{BaseURL}}/graphql/playground"
+      - "{{BaseURL}}/gql"
+      - "{{BaseURL}}/gql/"
+      - "{{BaseURL}}/query"
+      - "{{BaseURL}}/queries"
+      - "{{BaseURL}}/graph"
+      - "{{BaseURL}}/v1/graphql"
+      - "{{BaseURL}}/v2/graphql"
+      - "{{BaseURL}}/v3/graphql"
+      
+      # ============ SWAGGER / OPENAPI ============
+      - "{{BaseURL}}/swagger"
+      - "{{BaseURL}}/swagger/"
+      - "{{BaseURL}}/swagger.json"
+      - "{{BaseURL}}/swagger.yaml"
+      - "{{BaseURL}}/swagger.yml"
+      - "{{BaseURL}}/swagger-ui"
+      - "{{BaseURL}}/swagger-ui/"
+      - "{{BaseURL}}/swagger-ui.html"
+      - "{{BaseURL}}/swagger/index.html"
+      - "{{BaseURL}}/api-docs"
+      - "{{BaseURL}}/api-docs/"
+      - "{{BaseURL}}/api-docs.json"
+      - "{{BaseURL}}/api-docs.yaml"
+      - "{{BaseURL}}/openapi"
+      - "{{BaseURL}}/openapi/"
+      - "{{BaseURL}}/openapi.json"
+      - "{{BaseURL}}/openapi.yaml"
+      - "{{BaseURL}}/openapi.yml"
+      - "{{BaseURL}}/docs"
+      - "{{BaseURL}}/docs/"
+      - "{{BaseURL}}/documentation"
+      - "{{BaseURL}}/apidoc"
+      - "{{BaseURL}}/apidocs"
+      - "{{BaseURL}}/v2/api-docs"
+      - "{{BaseURL}}/v3/api-docs"
+      - "{{BaseURL}}/v1/swagger.json"
+      - "{{BaseURL}}/v2/swagger.json"
+      - "{{BaseURL}}/v3/swagger.json"
+      
+      # ============ USER MANAGEMENT ============
+      - "{{BaseURL}}/api/users"
+      - "{{BaseURL}}/api/user"
+      - "{{BaseURL}}/api/users/"
+      - "{{BaseURL}}/api/user/"
+      - "{{BaseURL}}/api/v1/users"
+      - "{{BaseURL}}/api/v2/users"
+      - "{{BaseURL}}/api/v3/users"
+      - "{{BaseURL}}/api/accounts"
+      - "{{BaseURL}}/api/account"
+      - "{{BaseURL}}/api/accounts/"
+      - "{{BaseURL}}/api/account/"
+      - "{{BaseURL}}/api/v1/accounts"
+      - "{{BaseURL}}/api/v2/accounts"
+      - "{{BaseURL}}/api/v3/accounts"
+      - "{{BaseURL}}/api/admin/users"
+      - "{{BaseURL}}/api/admin/accounts"
+      - "{{BaseURL}}/api/users/create"
+      - "{{BaseURL}}/api/users/register"
+      - "{{BaseURL}}/api/users/login"
+      - "{{BaseURL}}/api/users/logout"
+      - "{{BaseURL}}/api/users/profile"
+      - "{{BaseURL}}/api/users/me"
+      - "{{BaseURL}}/api/users/update"
+      - "{{BaseURL}}/api/users/delete"
+      - "{{BaseURL}}/api/users/activate"
+      - "{{BaseURL}}/api/users/deactivate"
+      - "{{BaseURL}}/api/users/verify"
+      - "{{BaseURL}}/api/users/reset-password"
+      - "{{BaseURL}}/api/users/forgot-password"
+      - "{{BaseURL}}/api/users/change-password"
+      - "{{BaseURL}}/api/users/email"
+      - "{{BaseURL}}/api/users/phone"
+      - "{{BaseURL}}/api/users/roles"
+      - "{{BaseURL}}/api/users/permissions"
+      - "{{BaseURL}}/api/users/groups"
+      - "{{BaseURL}}/api/users/search"
+      - "{{BaseURL}}/api/users/filter"
+      - "{{BaseURL}}/api/users/export"
+      - "{{BaseURL}}/api/users/import"
+      - "{{BaseURL}}/api/users/bulk"
+      - "{{BaseURL}}/api/users/batch"
+      
+      # ============ AUTHENTICATION ============
+      - "{{BaseURL}}/api/auth"
+      - "{{BaseURL}}/api/auth/"
+      - "{{BaseURL}}/api/v1/auth"
+      - "{{BaseURL}}/api/v2/auth"
+      - "{{BaseURL}}/api/v3/auth"
+      - "{{BaseURL}}/api/login"
+      - "{{BaseURL}}/api/logout"
+      - "{{BaseURL}}/api/register"
+      - "{{BaseURL}}/api/signup"
+      - "{{BaseURL}}/api/signin"
+      - "{{BaseURL}}/api/signout"
+      - "{{BaseURL}}/api/authenticate"
+      - "{{BaseURL}}/api/authorize"
+      - "{{BaseURL}}/api/token"
+      - "{{BaseURL}}/api/token/"
+      - "{{BaseURL}}/api/oauth"
+      - "{{BaseURL}}/api/oauth/"
+      - "{{BaseURL}}/api/oauth2"
+      - "{{BaseURL}}/api/oauth2/"
+      - "{{BaseURL}}/api/jwt"
+      - "{{BaseURL}}/api/session"
+      - "{{BaseURL}}/api/sessions"
+      - "{{BaseURL}}/api/refresh"
+      - "{{BaseURL}}/api/refresh-token"
+      - "{{BaseURL}}/api/revoke"
+      - "{{BaseURL}}/api/validate"
+      - "{{BaseURL}}/api/verify"
+      - "{{BaseURL}}/api/mfa"
+      - "{{BaseURL}}/api/2fa"
+      - "{{BaseURL}}/api/totp"
+      - "{{BaseURL}}/api/sso"
+      - "{{BaseURL}}/api/saml"
+      - "{{BaseURL}}/api/ldap"
+      
+      # ============ CRUD OPERATIONS ============
+      - "{{BaseURL}}/api/items"
+      - "{{BaseURL}}/api/items/"
+      - "{{BaseURL}}/api/v1/items"
+      - "{{BaseURL}}/api/v2/items"
+      - "{{BaseURL}}/api/v3/items"
+      - "{{BaseURL}}/api/products"
+      - "{{BaseURL}}/api/product"
+      - "{{BaseURL}}/api/products/"
+      - "{{BaseURL}}/api/v1/products"
+      - "{{BaseURL}}/api/v2/products"
+      - "{{BaseURL}}/api/v3/products"
+      - "{{BaseURL}}/api/orders"
+      - "{{BaseURL}}/api/order"
+      - "{{BaseURL}}/api/orders/"
+      - "{{BaseURL}}/api/v1/orders"
+      - "{{BaseURL}}/api/v2/orders"
+      - "{{BaseURL}}/api/v3/orders"
+      - "{{BaseURL}}/api/payments"
+      - "{{BaseURL}}/api/payment"
+      - "{{BaseURL}}/api/payments/"
+      - "{{BaseURL}}/api/v1/payments"
+      - "{{BaseURL}}/api/v2/payments"
+      - "{{BaseURL}}/api/v3/payments"
+      - "{{BaseURL}}/api/invoices"
+      - "{{BaseURL}}/api/invoice"
+      - "{{BaseURL}}/api/invoices/"
+      - "{{BaseURL}}/api/v1/invoices"
+      - "{{BaseURL}}/api/v2/invoices"
+      - "{{BaseURL}}/api/v3/invoices"
+      - "{{BaseURL}}/api/transactions"
+      - "{{BaseURL}}/api/transaction"
+      - "{{BaseURL}}/api/transactions/"
+      - "{{BaseURL}}/api/v1/transactions"
+      - "{{BaseURL}}/api/v2/transactions"
+      - "{{BaseURL}}/api/v3/transactions"
+      
+      # ============ SEARCH & FILTER ============
+      - "{{BaseURL}}/api/search"
+      - "{{BaseURL}}/api/search/"
+      - "{{BaseURL}}/api/v1/search"
+      - "{{BaseURL}}/api/v2/search"
+      - "{{BaseURL}}/api/v3/search"
+      - "{{BaseURL}}/api/filter"
+      - "{{BaseURL}}/api/filter/"
+      - "{{BaseURL}}/api/query"
+      - "{{BaseURL}}/api/query/"
+      - "{{BaseURL}}/api/find"
+      - "{{BaseURL}}/api/find/"
+      - "{{BaseURL}}/api/lookup"
+      - "{{BaseURL}}/api/lookup/"
+      - "{{BaseURL}}/api/autocomplete"
+      - "{{BaseURL}}/api/suggest"
+      - "{{BaseURL}}/api/recommend"
+      
+      # ============ SYSTEM / ADMIN ============
+      - "{{BaseURL}}/api/admin"
+      - "{{BaseURL}}/api/admin/"
+      - "{{BaseURL}}/api/v1/admin"
+      - "{{BaseURL}}/api/v2/admin"
+      - "{{BaseURL}}/api/v3/admin"
+      - "{{BaseURL}}/api/administration"
+      - "{{BaseURL}}/api/management"
+      - "{{BaseURL}}/api/dashboard"
+      - "{{BaseURL}}/api/stats"
+      - "{{BaseURL}}/api/statistics"
+      - "{{BaseURL}}/api/metrics"
+      - "{{BaseURL}}/api/reports"
+      - "{{BaseURL}}/api/report"
+      - "{{BaseURL}}/api/analytics"
+      - "{{BaseURL}}/api/audit"
+      - "{{BaseURL}}/api/audit/"
+      - "{{BaseURL}}/api/audit/logs"
+      - "{{BaseURL}}/api/logs"
+      - "{{BaseURL}}/api/errors"
+      - "{{BaseURL}}/api/debug"
+      - "{{BaseURL}}/api/status"
+      - "{{BaseURL}}/api/health"
+      - "{{BaseURL}}/api/health/"
+      - "{{BaseURL}}/api/v1/health"
+      - "{{BaseURL}}/api/v2/health"
+      - "{{BaseURL}}/api/v3/health"
+      - "{{BaseURL}}/api/ping"
+      - "{{BaseURL}}/api/ready"
+      - "{{BaseURL}}/api/live"
+      - "{{BaseURL}}/api/info"
+      - "{{BaseURL}}/api/version"
+      - "{{BaseURL}}/api/config"
+      - "{{BaseURL}}/api/configuration"
+      - "{{BaseURL}}/api/settings"
+      - "{{BaseURL}}/api/options"
+      - "{{BaseURL}}/api/preferences"
+      
+      # ============ WEBHOOKS & NOTIFICATIONS ============
+      - "{{BaseURL}}/api/webhooks"
+      - "{{BaseURL}}/api/webhook"
+      - "{{BaseURL}}/api/webhooks/"
+      - "{{BaseURL}}/api/v1/webhooks"
+      - "{{BaseURL}}/api/v2/webhooks"
+      - "{{BaseURL}}/api/v3/webhooks"
+      - "{{BaseURL}}/api/notifications"
+      - "{{BaseURL}}/api/notification"
+      - "{{BaseURL}}/api/notify"
+      - "{{BaseURL}}/api/events"
+      - "{{BaseURL}}/api/event"
+      - "{{BaseURL}}/api/subscriptions"
+      - "{{BaseURL}}/api/subscribe"
+      - "{{BaseURL}}/api/callbacks"
+      - "{{BaseURL}}/api/callback"
+      
+      # ============ FILE & MEDIA ============
+      - "{{BaseURL}}/api/files"
+      - "{{BaseURL}}/api/file"
+      - "{{BaseURL}}/api/files/"
+      - "{{BaseURL}}/api/upload"
+      - "{{BaseURL}}/api/uploads"
+      - "{{BaseURL}}/api/download"
+      - "{{BaseURL}}/api/downloads"
+      - "{{BaseURL}}/api/media"
+      - "{{BaseURL}}/api/images"
+      - "{{BaseURL}}/api/image"
+      - "{{BaseURL}}/api/videos"
+      - "{{BaseURL}}/api/video"
+      - "{{BaseURL}}/api/documents"
+      - "{{BaseURL}}/api/document"
+      - "{{BaseURL}}/api/attachments"
+      - "{{BaseURL}}/api/attachment"
+      - "{{BaseURL}}/api/import"
+      - "{{BaseURL}}/api/export"
+      - "{{BaseURL}}/api/bulk-import"
+      - "{{BaseURL}}/api/bulk-export"
+      
+      # ============ RELATIONSHIPS & ASSOCIATIONS ============
+      - "{{BaseURL}}/api/relationships"
+      - "{{BaseURL}}/api/relationship"
+      - "{{BaseURL}}/api/associations"
+      - "{{BaseURL}}/api/association"
+      - "{{BaseURL}}/api/links"
+      - "{{BaseURL}}/api/link"
+      - "{{BaseURL}}/api/connections"
+      - "{{BaseURL}}/api/connection"
+      - "{{BaseURL}}/api/friends"
+      - "{{BaseURL}}/api/followers"
+      - "{{BaseURL}}/api/following"
+      
+      # ============ TAGS & CATEGORIES ============
+      - "{{BaseURL}}/api/tags"
+      - "{{BaseURL}}/api/tag"
+      - "{{BaseURL}}/api/tags/"
+      - "{{BaseURL}}/api/categories"
+      - "{{BaseURL}}/api/category"
+      - "{{BaseURL}}/api/categories/"
+      - "{{BaseURL}}/api/collections"
+      - "{{BaseURL}}/api/collection"
+      - "{{BaseURL}}/api/collections/"
+      - "{{BaseURL}}/api/types"
+      - "{{BaseURL}}/api/type"
+      - "{{BaseURL}}/api/classifications"
+      
+      # ============ SPECIFIC TECH STACK PATHS ============
+      # WordPress
+      - "{{BaseURL}}/wp-json"
+      - "{{BaseURL}}/wp-json/"
+      - "{{BaseURL}}/wp-json/wp/v2"
+      - "{{BaseURL}}/wp-json/wp/v2/posts"
+      - "{{BaseURL}}/wp-json/wp/v2/pages"
+      - "{{BaseURL}}/wp-json/wp/v2/users"
+      - "{{BaseURL}}/wp-json/wp/v2/media"
+      - "{{BaseURL}}/wp-json/jwt-auth/v1/token"
+      
+      # Laravel
+      - "{{BaseURL}}/api/sanctum/csrf-cookie"
+      - "{{BaseURL}}/api/passport/token"
+      - "{{BaseURL}}/api/oauth/token"
+      - "{{BaseURL}}/api/oauth/clients"
+      - "{{BaseURL}}/api/oauth/personal-access-tokens"
+      
+      # Django
+      - "{{BaseURL}}/api-auth"
+      - "{{BaseURL}}/api-auth/"
+      - "{{BaseURL}}/api-auth/login"
+      - "{{BaseURL}}/api-auth/logout"
+      - "{{BaseURL}}/admin/api"
+      - "{{BaseURL}}/rest-framework"
+      - "{{BaseURL}}/rest-framework/"
+      - "{{BaseURL}}/dj-rest-auth"
+      
+      # Spring Boot
+      - "{{BaseURL}}/actuator"
+      - "{{BaseURL}}/actuator/"
+      - "{{BaseURL}}/actuator/health"
+      - "{{BaseURL}}/actuator/info"
+      - "{{BaseURL}}/actuator/metrics"
+      - "{{BaseURL}}/actuator/env"
+      - "{{BaseURL}}/actuator/configprops"
+      - "{{BaseURL}}/actuator/mappings"
+      - "{{BaseURL}}/actuator/beans"
+      - "{{BaseURL}}/swagger-ui/index.html"
+      - "{{BaseURL}}/v2/api-docs"
+      - "{{BaseURL}}/v3/api-docs"
+      
+      # Node.js / Express
+      - "{{BaseURL}}/api/users"
+      - "{{BaseURL}}/api/posts"
+      - "{{BaseURL}}/api/comments"
+      - "{{BaseURL}}/api/auth"
+      - "{{BaseURL}}/api/profile"
+      - "{{BaseURL}}/api/feed"
+      - "{{BaseURL}}/api/messages"
+      - "{{BaseURL}}/api/notifications"
+      - "{{BaseURL}}/api/search"
+      - "{{BaseURL}}/api/explore"
+      
+      # Ruby on Rails
+      - "{{BaseURL}}/api/v1/users.json"
+      - "{{BaseURL}}/api/v1/posts.json"
+      - "{{BaseURL}}/api/v1/comments.json"
+      - "{{BaseURL}}/api/v1/sessions"
+      - "{{BaseURL}}/api/v1/registrations"
+      - "{{BaseURL}}/api/v1/passwords"
+      - "{{BaseURL}}/api/v1/confirmations"
+      
+      # GraphQL Specific
+      - "{{BaseURL}}/graphql/explorer"
+      - "{{BaseURL}}/graphql/console"
+      - "{{BaseURL}}/graphql/graphiql"
+      - "{{BaseURL}}/graphql/playground"
+      - "{{BaseURL}}/gql/explorer"
+      - "{{BaseURL}}/gql/console"
+      - "{{BaseURL}}/gql/graphiql"
+      - "{{BaseURL}}/gql/playground"
+      
+      # Other API Frameworks
+      - "{{BaseURL}}/api.php"
+      - "{{BaseURL}}/index.php/api"
+      - "{{BaseURL}}/webservice"
+      - "{{BaseURL}}/webservice/"
+      - "{{BaseURL}}/service"
+      - "{{BaseURL}}/service/"
+      - "{{BaseURL}}/services"
+      - "{{BaseURL}}/services/"
+      - "{{BaseURL}}/soap"
+      - "{{BaseURL}}/soap/"
+      - "{{BaseURL}}/xmlrpc"
+      - "{{BaseURL}}/xmlrpc/"
+      - "{{BaseURL}}/jsonrpc"
+      - "{{BaseURL}}/jsonrpc/"
+      - "{{BaseURL}}/rpc"
+      - "{{BaseURL}}/rpc/"
+      
+      # ============ CLOUD & MICROSERVICES ============
+      - "{{BaseURL}}/api/gateway"
+      - "{{BaseURL}}/api/gateway/"
+      - "{{BaseURL}}/api/registry"
+      - "{{BaseURL}}/api/registry/"
+      - "{{BaseURL}}/api/discovery"
+      - "{{BaseURL}}/api/discovery/"
+      - "{{BaseURL}}/api/config-server"
+      - "{{BaseURL}}/api/config-server/"
+      - "{{BaseURL}}/api/service-registry"
+      - "{{BaseURL}}/api/service-registry/"
+      
+      # ============ AUTH0 / OKTA ============
+      - "{{BaseURL}}/api/v2/users"
+      - "{{BaseURL}}/api/v2/clients"
+      - "{{BaseURL}}/api/v2/connections"
+      - "{{BaseURL}}/api/v2/organizations"
+      - "{{BaseURL}}/api/v2/roles"
+      - "{{BaseURL}}/api/v2/permissions"
+      
+      # ============ STRIPE / PAYMENT ============
+      - "{{BaseURL}}/api/v1/payment-intents"
+      - "{{BaseURL}}/api/v1/customers"
+      - "{{BaseURL}}/api/v1/subscriptions"
+      - "{{BaseURL}}/api/v1/plans"
+      - "{{BaseURL}}/api/v1/coupons"
+      - "{{BaseURL}}/api/v1/checkout"
+      - "{{BaseURL}}/api/v1/checkout/"
+      - "{{BaseURL}}/api/v1/billing"
+      - "{{BaseURL}}/api/v1/invoices"
+      - "{{BaseURL}}/api/v1/refunds"
+      - "{{BaseURL}}/api/v1/disputes"
+      - "{{BaseURL}}/api/v1/webhook-endpoints"
+      
+      # ============ TWILIO / COMMUNICATION ============
+      - "{{BaseURL}}/api/v1/messages"
+      - "{{BaseURL}}/api/v1/calls"
+      - "{{BaseURL}}/api/v1/conversations"
+      - "{{BaseURL}}/api/v1/participants"
+      - "{{BaseURL}}/api/v1/chat"
+      - "{{BaseURL}}/api/v1/sms"
+      - "{{BaseURL}}/api/v1/email"
+      - "{{BaseURL}}/api/v1/voice"
+      - "{{BaseURL}}/api/v1/video"
+      
+      # ============ SOCIAL / FEED ============
+      - "{{BaseURL}}/api/feed"
+      - "{{BaseURL}}/api/feeds"
+      - "{{BaseURL}}/api/timeline"
+      - "{{BaseURL}}/api/posts"
+      - "{{BaseURL}}/api/post"
+      - "{{BaseURL}}/api/comments"
+      - "{{BaseURL}}/api/comment"
+      - "{{BaseURL}}/api/likes"
+      - "{{BaseURL}}/api/like"
+      - "{{BaseURL}}/api/shares"
+      - "{{BaseURL}}/api/share"
+      - "{{BaseURL}}/api/reactions"
+      - "{{BaseURL}}/api/reaction"
+      
+      # ============ GAMING / SCORES ============
+      - "{{BaseURL}}/api/scores"
+      - "{{BaseURL}}/api/score"
+      - "{{BaseURL}}/api/leaderboard"
+      - "{{BaseURL}}/api/rankings"
+      - "{{BaseURL}}/api/ranking"
+      - "{{BaseURL}}/api/achievements"
+      - "{{BaseURL}}/api/achievement"
+      - "{{BaseURL}}/api/challenges"
+      - "{{BaseURL}}/api/challenge"
+      
+      # ============ ANALYTICS / METRICS ============
+      - "{{BaseURL}}/api/analytics"
+      - "{{BaseURL}}/api/analytics/"
+      - "{{BaseURL}}/api/v1/analytics"
+      - "{{BaseURL}}/api/v2/analytics"
+      - "{{BaseURL}}/api/metrics"
+      - "{{BaseURL}}/api/metrics/"
+      - "{{BaseURL}}/api/v1/metrics"
+      - "{{BaseURL}}/api/v2/metrics"
+      - "{{BaseURL}}/api/tracking"
+      - "{{BaseURL}}/api/events"
+      - "{{BaseURL}}/api/events/"
+      - "{{BaseURL}}/api/event-tracking"
+      
+      # ============ WEB3 / CRYPTO ============
+      - "{{BaseURL}}/api/v1/balance"
+      - "{{BaseURL}}/api/v1/transactions"
+      - "{{BaseURL}}/api/v1/wallet"
+      - "{{BaseURL}}/api/v1/wallets"
+      - "{{BaseURL}}/api/v1/address"
+      - "{{BaseURL}}/api/v1/addresses"
+      - "{{BaseURL}}/api/v1/contract"
+      - "{{BaseURL}}/api/v1/token"
+      - "{{BaseURL}}/api/v1/tokens"
+      - "{{BaseURL}}/api/v1/nft"
+      - "{{BaseURL}}/api/v1/nfts"
+      - "{{BaseURL}}/api/v1/mint"
+      - "{{BaseURL}}/api/v1/burn"
+      - "{{BaseURL}}/api/v1/swap"
+      - "{{BaseURL}}/api/v1/swap/"
+      - "{{BaseURL}}/api/v1/liquidity"
+      - "{{BaseURL}}/api/v1/stake"
+      - "{{BaseURL}}/api/v1/staking"
+      - "{{BaseURL}}/api/v1/yield"
+      - "{{BaseURL}}/api/v1/farm"
+      - "{{BaseURL}}/api/v1/pool"
+      
+      # ============ E-COMMERCE ============
+      - "{{BaseURL}}/api/v1/cart"
+      - "{{BaseURL}}/api/v1/cart/"
+      - "{{BaseURL}}/api/v1/cart/items"
+      - "{{BaseURL}}/api/v1/checkout"
+      - "{{BaseURL}}/api/v1/checkout/"
+      - "{{BaseURL}}/api/v1/shipping"
+      - "{{BaseURL}}/api/v1/tax"
+      - "{{BaseURL}}/api/v1/discount"
+      - "{{BaseURL}}/api/v1/coupons"
+      - "{{BaseURL}}/api/v1/gift-cards"
+      - "{{BaseURL}}/api/v1/reviews"
+      - "{{BaseURL}}/api/v1/ratings"
+      - "{{BaseURL}}/api/v1/wishlist"
+      - "{{BaseURL}}/api/v1/wishlist/"
+      
+      # ============ CMS ============
+      - "{{BaseURL}}/api/v1/pages"
+      - "{{BaseURL}}/api/v1/page"
+      - "{{BaseURL}}/api/v1/sections"
+      - "{{BaseURL}}/api/v1/blocks"
+      - "{{BaseURL}}/api/v1/templates"
+      - "{{BaseURL}}/api/v1/menus"
+      - "{{BaseURL}}/api/v1/navigation"
+      - "{{BaseURL}}/api/v1/site"
+      - "{{BaseURL}}/api/v1/site/"
+      - "{{BaseURL}}/api/v1/settings"
+      - "{{BaseURL}}/api/v1/theme"
+      - "{{BaseURL}}/api/v1/widgets"
+      
+      # ============ MISC ============
+      - "{{BaseURL}}/api/version"
+      - "{{BaseURL}}/api/about"
+      - "{{BaseURL}}/api/contact"
+      - "{{BaseURL}}/api/support"
+      - "{{BaseURL}}/api/help"
+      - "{{BaseURL}}/api/faq"
+      - "{{BaseURL}}/api/terms"
+      - "{{BaseURL}}/api/privacy"
+      - "{{BaseURL}}/api/cookie"
+      - "{{BaseURL}}/api/consent"
+      - "{{BaseURL}}/api/compliance"
+      - "{{BaseURL}}/api/gdpr"
+      - "{{BaseURL}}/api/ccpa"
+      
+      # ============ LEGACY API PATHS ============
+      - "{{BaseURL}}/old-api"
+      - "{{BaseURL}}/legacy-api"
+      - "{{BaseURL}}/deprecated"
+      - "{{BaseURL}}/api-old"
+      - "{{BaseURL}}/api-legacy"
+      - "{{BaseURL}}/api/v0"
+      - "{{BaseURL}}/api/0.1"
+      - "{{BaseURL}}/api/0.2"
+      - "{{BaseURL}}/api/0.3"
+      - "{{BaseURL}}/api/old"
+      - "{{BaseURL}}/api/classic"
+      
+      # ============ API GATEWAYS ============
+      - "{{BaseURL}}/gateway"
+      - "{{BaseURL}}/gateway/"
+      - "{{BaseURL}}/proxy"
+      - "{{BaseURL}}/proxy/"
+      - "{{BaseURL}}/edge"
+      - "{{BaseURL}}/edge/"
+      - "{{BaseURL}}/router"
+      - "{{BaseURL}}/router/"
+      
+      # ============ DEV TOOLS ============
+      - "{{BaseURL}}/api/test"
+      - "{{BaseURL}}/api/testing"
+      - "{{BaseURL}}/api/demo"
+      - "{{BaseURL}}/api/sandbox"
+      - "{{BaseURL}}/api/mock"
+      - "{{BaseURL}}/api/stub"
+      - "{{BaseURL}}/api/fake"
+      - "{{BaseURL}}/api/sample"
+      - "{{BaseURL}}/api/example"
+      - "{{BaseURL}}/api/tutorial"
+      - "{{BaseURL}}/api/guide"
+      - "{{BaseURL}}/api/playground"
+
+    matchers-condition: or
+    matchers:
+      # ============ STATUS CODE MATCHERS ============
+      - type: status
+        status:
+          - 200
+          - 201
+          - 202
+          - 203
+          - 204
+          - 205
+          - 206
+          - 301
+          - 302
+          - 303
+          - 304
+          - 307
+          - 308
+          - 400
+          - 401
+          - 402
+          - 403
+          - 405
+          - 406
+          - 409
+          - 410
+          - 415
+          - 418
+          - 429
+          - 500
+          - 501
+          - 502
+          - 503
+          - 504
+
+      # ============ HEADER MATCHERS ============
+      - type: word
+        part: header
+        words:
+          - 'Content-Type: application/json'
+          - 'Content-Type: application/hal+json'
+          - 'Content-Type: application/vnd.api+json'
+          - 'Content-Type: application/problem+json'
+          - 'Content-Type: application/xml'
+          - 'Content-Type: application/hal+xml'
+          - 'Content-Type: application/ld+json'
+          - 'Content-Type: application/geo+json'
+          - 'X-Powered-By: Express'
+          - 'X-Powered-By: PHP'
+          - 'X-Powered-By: ASP.NET'
+          - 'X-Powered-By: Spring'
+          - 'X-Powered-By: Django'
+          - 'X-Powered-By: Flask'
+          - 'X-Powered-By: Rails'
+          - 'X-Powered-By: Laravel'
+          - 'Server: nginx'
+          - 'Server: Apache'
+          - 'Server: Microsoft-IIS'
+          - 'Server: Cloudflare'
+          - 'Server: AWS'
+          - 'Server: GCP'
+          - 'Server: Azure'
+          - 'Access-Control-Allow-Origin:'
+          - 'Access-Control-Allow-Methods:'
+          - 'Access-Control-Allow-Headers:'
+          - 'Access-Control-Expose-Headers:'
+          - 'Access-Control-Max-Age:'
+          - 'Access-Control-Allow-Credentials:'
+          - 'WWW-Authenticate:'
+          - 'Authorization:'
+          - 'X-Auth-Token:'
+          - 'X-API-Key:'
+          - 'X-API-Version:'
+          - 'API-Version:'
+          - 'GraphQL-Preflight:'
+          - 'X-GraphQL:'
+          - 'X-Swagger-UI:'
+
+      # ============ BODY MATCHERS - RESPONSE PATTERNS ============
+      - type: word
+        part: body
+        words:
+          - '"status": "ok"'
+          - '"status": "success"'
+          - '"status": "error"'
+          - '"status": "failed"'
+          - '"success": true'
+          - '"success": false'
+          - '"error":'
+          - '"errors":'
+          - '"message":'
+          - '"data":'
+          - '"data": {'
+          - '"data": ['
+          - '"result":'
+          - '"results":'
+          - '"total":'
+          - '"count":'
+          - '"items":'
+          - '"page":'
+          - '"limit":'
+          - '"offset":'
+          - '"sort":'
+          - '"filter":'
+          - '"code":'
+          - '"token":'
+          - '"access_token":'
+          - '"refresh_token":'
+          - '"expires_in":'
+          - '"token_type":'
+          - '"id":'
+          - '"name":'
+          - '"email":'
+          - '"username":'
+          - '"created_at":'
+          - '"updated_at":'
+          - '"deleted_at":'
+          - '"metadata":'
+          - '"links":'
+          - '"href":'
+          - '"rel":'
+          - '"method":'
+          - '"description":'
+          - '"summary":'
+          - '"operationId":'
+          - '"parameters":'
+          - '"responses":'
+          - '"schemas":'
+          - '"definitions":'
+          - '"properties":'
+          - '"required":'
+          - '"type":'
+          - '"enum":'
+          - '"format":'
+          - '"minimum":'
+          - '"maximum":'
+          - '"pattern":'
+          - '"default":'
+          - '"example":'
+          - '"examples":'
+          - '"$ref":'
+          - '"allOf":'
+          - '"anyOf":'
+          - '"oneOf":'
+          - '"not":'
+          - '"items":'
+          - '"additionalProperties":'
+          - '"discriminator":'
+          - '"readOnly":'
+          - '"writeOnly":'
+          - '"deprecated":'
+          - '"openapi":'
+          - '"swagger":'
+          - '"info":'
+          - '"paths":'
+          - '"components":'
+          - '"security":'
+          - '"tags":'
+          - '"externalDocs":'
+          - '"x-":'
+          - '"query":'
+          - '"mutation":'
+          - '"subscription":'
+          - '"__typename":'
+          - '"__schema":'
+          - '"__type":'
+          - '"typeDefs":'
+          - '"resolvers":'
+          - '"context":'
+
+      # ============ API FINGERPRINTING ============
+      - type: word
+        part: body
+        words:
+          - '"swagger":"2.0"'
+          - '"swagger":"3.0"'
+          - '"openapi":"3.0.0"'
+          - '"openapi":"3.0.1"'
+          - '"openapi":"3.0.2"'
+          - '"openapi":"3.0.3"'
+          - '"openapi":"3.1.0"'
+          - '"graphql": true'
+          - '"extensions": {'
+          - '"extensions": ['
+          - '"@graphql":'
+          - '"__graphql":'
+          - '"data": { "__typename":'
+          - '"errors": [{ "extensions":'
+          - '"x-graphql":'
+          - '"graphql-playground":'
+
+      # ============ XML MATCHERS ============
+      - type: regex
+        part: body
+        regex:
+          - '<\?xml version="1.0" encoding="[^"]+"\?>'
+          - '<soap:Envelope'
+          - '<wsdl:definitions'
+          - '<xsd:schema'
+          - '<wadl:application'
+          - '<REST'
+
+      # ============ HTML MATCHERS ============
+      - type: regex
+        part: body
+        regex:
+          - '<title>.*API.*</title>'
+          - '<title>.*Swagger.*</title>'
+          - '<title>.*GraphQL.*</title>'
+          - '<title>.*Playground.*</title>'
+          - '<title>.*Documentation.*</title>'
+          - 'Swagger UI'
+          - 'GraphiQL'
+          - 'GraphQL Playground'
+          - 'API Documentation'
+          - 'REST API'
+          - 'RESTful API'
+
+    extractors:
+      # ============ EXTRACT VERSION ============
+      - type: regex
+        name: api_version
+        part: header
+        regex:
+          - 'X-API-Version: v([0-9]+(?:\.[0-9]+)*)'
+          - 'API-Version: ([0-9]+(?:\.[0-9]+)*)'
+          - 'Version: ([0-9]+(?:\.[0-9]+)*)'
+
+      # ============ EXTRACT SERVER TECH ============
+      - type: regex
+        name: server_tech
+        part: header
+        regex:
+          - 'Server: ([^\r\n]+)'
+          - 'X-Powered-By: ([^\r\n]+)'
+
+      # ============ EXTRACT RESPONSE SIZE ============
+      - type: regex
+        name: response_size
+        part: header
+        regex:
+          - 'Content-Length: ([0-9]+)'
+
+      # ============ EXTRACT RESPONSE TYPE ============
+      - type: regex
+        name: content_type
+        part: header
+        regex:
+          - 'Content-Type: ([^\r\n]+)'
+
+      # ============ EXTRACT DATA FROM JSON ============
+      - type: regex
+        name: api_data
+        part: body
+        regex:
+          - '"data"\s*:\s*\{[^{}]*\}'
+          - '"result"\s*:\s*\{[^{}]*\}'
+          - '"results"\s*:\s*\[[^\]]*\]'
+          - '"items"\s*:\s*\[[^\]]*\]'
+
+      # ============ EXTRACT TITLES ============
+      - type: regex
+        name: page_title
+        part: body
+        regex:
+          - '<title>([^<]+)</title>'
