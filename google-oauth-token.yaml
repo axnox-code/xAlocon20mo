@@ -1,0 +1,21 @@
+id: google-oauth-token
+
+info:
+  name: Google OAuth Token Disclosure
+  author: reewardius
+  severity: high
+  metadata:
+    verified: true
+    max-request: 1
+  tags: disclosure,google,exposure,oauth
+
+http:
+  - method: GET
+    path:
+      - '{{BaseURL}}'
+
+    matchers:
+      - type: regex
+        part: body
+        regex:
+          - 'ya29\.[A-Za-z0-9_-]+'
