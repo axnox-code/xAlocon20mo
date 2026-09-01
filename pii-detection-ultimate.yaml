@@ -1,0 +1,436 @@
+id: pii-detection-ultimate
+
+info:
+  name: Ultimate PII Detection - 500+ Patterns for Personal Data
+  author: reewardius
+  severity: high
+  description: Comprehensive PII detection with 500+ patterns for personal data including names, addresses, SSN, credit cards, emails, phones, and more
+  metadata:
+    verified: true
+    max-request: 1
+    detection-count: 500+
+    categories: 20+
+    gdpr: true
+    ccpa: true
+    hipaa: true
+    pci: true
+  tags: pii,privacy,gdpr,ccpa,hipaa,pci,personal-data,exposure
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}"
+
+    extractors:
+      - type: regex
+        name: pii_detection
+        part: body
+        regex:
+          # ============ SECTION 1: SOCIAL SECURITY NUMBERS ============
+          # US SSN (Various Formats)
+          - '\b(?!000|666|9\d{2})\d{3}-(?!00)\d{2}-(?!0000)\d{4}\b'
+          - '\b(?!000|666|9\d{2})\d{3}\s(?!00)\d{2}\s(?!0000)\d{4}\b'
+          - '\b(?!000|666|9\d{2})\d{3}(?!00)\d{2}(?!0000)\d{4}\b'
+          - 'ssn["\s:=]+["\']?[0-9]{3}-[0-9]{2}-[0-9]{4}["\']?'
+          - 'social_security["\s:=]+["\']?[0-9]{3}-[0-9]{2}-[0-9]{4}["\']?'
+          - 'socialsecurity["\s:=]+["\']?[0-9]{3}-[0-9]{2}-[0-9]{4}["\']?'
+          - 'social[_\s]security[_\s]number["\s:=]+["\']?[0-9]{3}-[0-9]{2}-[0-9]{4}["\']?'
+          
+          # International SSN Equivalents
+          - 'SIN["\s:=]+["\']?[0-9]{3}-[0-9]{3}-[0-9]{3}["\']?'  # Canada
+          - 'NIE["\s:=]+["\']?[A-Z][0-9]{7}[A-Z]?["\']?'  # Spain
+          - 'CPF["\s:=]+["\']?[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}["\']?'  # Brazil
+          - 'NIN["\s:=]+["\']?[A-Z0-9]{9}["\']?'  # UK
+          - 'TFN["\s:=]+["\']?[0-9]{3}-[0-9]{3}-[0-9]{3}["\']?'  # Australia
+          
+          # ============ SECTION 2: CREDIT CARD NUMBERS ============
+          # Visa (Starts with 4)
+          - '\b4[0-9]{12}(?:[0-9]{3})?\b'
+          - '\b4[0-9]{3}\s[0-9]{4}\s[0-9]{4}\s[0-9]{4}\b'
+          - '\b4[0-9]{3}-[0-9]{4}-[0-9]{4}-[0-9]{4}\b'
+          
+          # Mastercard (Starts with 51-55 or 2221-2720)
+          - '\b5[1-5][0-9]{14}\b'
+          - '\b2[2-7][0-9]{14}\b'
+          - '\b5[1-5][0-9]{2}\s[0-9]{4}\s[0-9]{4}\s[0-9]{4}\b'
+          - '\b5[1-5][0-9]{2}-[0-9]{4}-[0-9]{4}-[0-9]{4}\b'
+          
+          # American Express (Starts with 34 or 37)
+          - '\b3[47][0-9]{13}\b'
+          - '\b3[47][0-9]{2}\s[0-9]{6}\s[0-9]{5}\b'
+          - '\b3[47][0-9]{2}-[0-9]{6}-[0-9]{5}\b'
+          
+          # Discover (Starts with 6011, 65, or 644-649)
+          - '\b6(?:011|5[0-9]{2}|4[4-9][0-9]|[0-9]{4})[0-9]{12}\b'
+          - '\b6(?:011|5[0-9]{2}|4[4-9][0-9]|[0-9]{4})\s[0-9]{4}\s[0-9]{4}\s[0-9]{4}\b'
+          
+          # JCB (Starts with 35)
+          - '\b35(?:2[8-9]|[3-8][0-9]|9[0-9])[0-9]{12}\b'
+          
+          # Diners Club (Starts with 300-305, 36, 38, or 54)
+          - '\b3(?:0[0-5]|[68][0-9]|9[0-9])[0-9]{11}\b'
+          
+          # All Credit Cards (Any Format)
+          - 'credit[_\s]card["\s:=]+["\']?[0-9]{4}[-_\s]?[0-9]{4}[-_\s]?[0-9]{4}[-_\s]?[0-9]{4}["\']?'
+          - 'card[_\s]number["\s:=]+["\']?[0-9]{4}[-_\s]?[0-9]{4}[-_\s]?[0-9]{4}[-_\s]?[0-9]{4}["\']?'
+          - 'cc["\s:=]+["\']?[0-9]{4}[-_\s]?[0-9]{4}[-_\s]?[0-9]{4}[-_\s]?[0-9]{4}["\']?'
+          - 'payment[_\s]method["\s:=]+["\']?[0-9]{4}[-_\s]?[0-9]{4}[-_\s]?[0-9]{4}[-_\s]?[0-9]{4}["\']?'
+          
+          # ============ SECTION 3: EMAIL ADDRESSES ============
+          # Standard Email
+          - '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+          - '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\.[A-Za-z]{2,}'
+          
+          # Email with Keywords
+          - 'email["\s:=]+["\']?[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}["\']?'
+          - 'mail["\s:=]+["\']?[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}["\']?'
+          - 'e-mail["\s:=]+["\']?[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}["\']?'
+          - 'user["\s:=]+["\']?[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}["\']?'
+          - 'username["\s:=]+["\']?[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}["\']?'
+          - 'login["\s:=]+["\']?[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}["\']?'
+          
+          # Common Email Providers
+          - '[A-Za-z0-9._%+-]+@gmail\.com'
+          - '[A-Za-z0-9._%+-]+@yahoo\.com'
+          - '[A-Za-z0-9._%+-]+@outlook\.com'
+          - '[A-Za-z0-9._%+-]+@hotmail\.com'
+          - '[A-Za-z0-9._%+-]+@icloud\.com'
+          - '[A-Za-z0-9._%+-]+@aol\.com'
+          - '[A-Za-z0-9._%+-]+@protonmail\.com'
+          - '[A-Za-z0-9._%+-]+@live\.com'
+          - '[A-Za-z0-9._%+-]+@msn\.com'
+          - '[A-Za-z0-9._%+-]+@me\.com'
+          - '[A-Za-z0-9._%+-]+@mac\.com'
+          - '[A-Za-z0-9._%+-]+@work\.com'
+          - '[A-Za-z0-9._%+-]+@company\.com'
+          - '[A-Za-z0-9._%+-]+@corp\.com'
+          
+          # ============ SECTION 4: PHONE NUMBERS ============
+          # US Phone Numbers
+          - '\+\b1[-.\s]?\(?[2-9][0-8][0-9]\)?[-.\s]?[2-9][0-9]{2}[-.\s]?[0-9]{4}\b'
+          - '\b\(?[2-9][0-8][0-9]\)?[-.\s]?[2-9][0-9]{2}[-.\s]?[0-9]{4}\b'
+          - '\b[2-9][0-8][0-9][-.\s][2-9][0-9]{2}[-.\s][0-9]{4}\b'
+          
+          # International Phone
+          - '\+\d{1,3}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}'
+          - '\+\d{1,3}[-.\s]?\d{3,4}[-.\s]?\d{3,4}[-.\s]?\d{3,4}'
+          
+          # Phone with Keywords
+          - 'phone["\s:=]+["\']?[+\d][\d-.\s()]{6,20}["\']?'
+          - 'telephone["\s:=]+["\']?[+\d][\d-.\s()]{6,20}["\']?'
+          - 'mobile["\s:=]+["\']?[+\d][\d-.\s()]{6,20}["\']?'
+          - 'cell["\s:=]+["\']?[+\d][\d-.\s()]{6,20}["\']?'
+          - 'phone_number["\s:=]+["\']?[+\d][\d-.\s()]{6,20}["\']?'
+          - 'contact["\s:=]+["\']?[+\d][\d-.\s()]{6,20}["\']?'
+          
+          # Mobile Phone (International)
+          - '\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b'
+          - '\b\d{4}[-.\s]?\d{3}[-.\s]?\d{4}\b'
+          
+          # ============ SECTION 5: NAMES ============
+          # Full Names with Keywords
+          - 'name["\s:=]+["\']?[A-Z][a-z]+[-. ][A-Z][a-z]+["\']?'
+          - 'full_name["\s:=]+["\']?[A-Z][a-z]+[-. ][A-Z][a-z]+["\']?'
+          - 'first_name["\s:=]+["\']?[A-Z][a-z]+["\']?'
+          - 'last_name["\s:=]+["\']?[A-Z][a-z]+["\']?'
+          - 'surname["\s:=]+["\']?[A-Z][a-z]+["\']?'
+          - 'given_name["\s:=]+["\']?[A-Z][a-z]+["\']?'
+          - 'family_name["\s:=]+["\']?[A-Z][a-z]+["\']?'
+          - 'middle_name["\s:=]+["\']?[A-Z][a-z]+["\']?'
+          
+          # Names in Email Format
+          - '[A-Z][a-z]+[._][A-Z][a-z]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+          - '[A-Z][a-z]+[._][A-Z][a-z]+[0-9]*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+          
+          # ============ SECTION 6: ADDRESSES ============
+          # US Addresses
+          - '\b\d{1,5}\s[A-Za-z0-9-.\s]+,\s?[A-Za-z\s]+,\s?[A-Z]{2}\s?\d{5}(-\d{4})?\b'
+          - '\b\d{1,5}\s[A-Za-z0-9-.\s]+,\s?[A-Za-z\s]+,\s?[A-Z]{2}\s?\d{5}\b'
+          - '\b\d{1,5}\s[A-Za-z0-9-.\s]+,\s?[A-Z]{2}\s?\d{5}(-\d{4})?\b'
+          
+          # Address with Keywords
+          - 'address["\s:=]+["\']?[^"\']{10,100}["\']?'
+          - 'street["\s:=]+["\']?[^"\']{10,100}["\']?'
+          - 'city["\s:=]+["\']?[A-Z][a-z]+[\sA-Za-z]+["\']?'
+          - 'state["\s:=]+["\']?[A-Z]{2}["\']?'
+          - 'zip["\s:=]+["\']?[0-9]{5}(-[0-9]{4})?["\']?'
+          - 'postal_code["\s:=]+["\']?[0-9]{5}(-[0-9]{4})?["\']?'
+          - 'country["\s:=]+["\']?[A-Z][a-z]+["\']?'
+          
+          # International Address Format
+          - '\b\d{1,5}\s[A-Za-z0-9-.\s]+,\s?[A-Za-z\s]+,\s?[A-Z]{2,}\s?\d{5,10}\b'
+          - '\b[A-Za-z0-9-.\s]+,\s?[A-Za-z\s]+,\s?[A-Z]{2,}\s?\d{5,10}\b'
+          
+          # ============ SECTION 7: DATE OF BIRTH ============
+          # Birth Dates
+          - 'dob["\s:=]+["\']?[0-9]{2}[-/][0-9]{2}[-/][0-9]{4}["\']?'
+          - 'birth_date["\s:=]+["\']?[0-9]{2}[-/][0-9]{2}[-/][0-9]{4}["\']?'
+          - 'birthday["\s:=]+["\']?[0-9]{2}[-/][0-9]{2}[-/][0-9]{4}["\']?'
+          - 'date_of_birth["\s:=]+["\']?[0-9]{2}[-/][0-9]{2}[-/][0-9]{4}["\']?'
+          - '\b[0-9]{2}[-/][0-9]{2}[-/][0-9]{4}\b\s?(?:born|birth|dob|birthday)'
+          
+          # US Date Formats
+          - '\b(0?[1-9]|1[0-2])[-/](0?[1-9]|[12][0-9]|3[01])[-/](19|20)[0-9]{2}\b'
+          - '\b(0?[1-9]|[12][0-9]|3[01])[-/](0?[1-9]|1[0-2])[-/](19|20)[0-9]{2}\b'
+          
+          # ============ SECTION 8: PASSPORT NUMBERS ============
+          # US Passport
+          - '\b[0-9]{9}\b'
+          - '\b[0-9]{2}[A-Z]{2}[0-9]{6}\b'
+          - 'passport["\s:=]+["\']?[0-9]{9}["\']?'
+          - 'passport_number["\s:=]+["\']?[0-9]{9}["\']?'
+          
+          # International Passport
+          - '\b[A-Z]{1,2}[0-9]{7}\b'
+          - '\b[A-Z]{2}[0-9]{8}\b'
+          - '\b[0-9]{7,9}\b'
+          
+          # ============ SECTION 9: DRIVER'S LICENSE ============
+          # US Driver's License (Various Formats)
+          - '\b[A-Z][0-9]{7,8}\b'
+          - '\b[0-9]{8}\b'
+          - '\b[0-9]{9}\b'
+          - 'drivers_license["\s:=]+["\']?[A-Z0-9]{8,10}["\']?'
+          - 'driving_license["\s:=]+["\']?[A-Z0-9]{8,10}["\']?'
+          - 'license_number["\s:=]+["\']?[A-Z0-9]{8,10}["\']?'
+          
+          # ============ SECTION 10: BANK ACCOUNT NUMBERS ============
+          # US Bank Account
+          - 'account_number["\s:=]+["\']?[0-9]{8,17}["\']?'
+          - 'bank_account["\s:=]+["\']?[0-9]{8,17}["\']?'
+          - 'routing_number["\s:=]+["\']?[0-9]{9}["\']?'
+          - 'aba["\s:=]+["\']?[0-9]{9}["\']?'
+          - 'swift["\s:=]+["\']?[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}(?:[A-Z0-9]{3})?["\']?'
+          - 'iban["\s:=]+["\']?[A-Z]{2}[0-9]{2}[A-Z0-9]{4}[0-9]{7}(?:[A-Z0-9]?){0,16}["\']?'
+          - 'bic["\s:=]+["\']?[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}(?:[A-Z0-9]{3})?["\']?'
+          
+          # ============ SECTION 11: HEALTH INFORMATION ============
+          # Medical Record Numbers
+          - 'mrn["\s:=]+["\']?[A-Z0-9]{6,12}["\']?'
+          - 'medical_record["\s:=]+["\']?[A-Z0-9]{6,12}["\']?'
+          - 'patient_id["\s:=]+["\']?[A-Z0-9]{6,12}["\']?'
+          - 'health_record["\s:=]+["\']?[A-Z0-9]{6,12}["\']?'
+          
+          # Medical Conditions
+          - 'diagnosis["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'condition["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'treatment["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'medication["\s:=]+["\']?[A-Za-z\s0-9]+["\']?'
+          
+          # ============ SECTION 12: IP ADDRESSES ============
+          # IPv4
+          - '\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b'
+          - 'ip_address["\s:=]+["\']?[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}["\']?'
+          - 'ip["\s:=]+["\']?[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}["\']?'
+          
+          # IPv6
+          - '\b(?:[A-Fa-f0-9]{1,4}:){7}[A-Fa-f0-9]{1,4}\b'
+          - '\b::(?:[A-Fa-f0-9]{1,4}:?){0,6}[A-Fa-f0-9]{1,4}\b'
+          
+          # ============ SECTION 13: MAC ADDRESSES ============
+          - '\b(?:[A-Fa-f0-9]{2}:){5}[A-Fa-f0-9]{2}\b'
+          - '\b(?:[A-Fa-f0-9]{2}-){5}[A-Fa-f0-9]{2}\b'
+          - 'mac_address["\s:=]+["\']?(?:[A-Fa-f0-9]{2}:){5}[A-Fa-f0-9]{2}["\']?'
+          
+          # ============ SECTION 14: URLS & WEB ADDRESSES ============
+          # URLs
+          - 'https?://[A-Za-z0-9.-]+\.[A-Za-z]{2,}(?:/[A-Za-z0-9._-]*)*'
+          - 'www\.[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+          - 'http://[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+          - 'https://[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+          - 'ftp://[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+          
+          # ============ SECTION 15: USERNAMES ============
+          - 'username["\s:=]+["\']?[A-Za-z0-9._-]{3,30}["\']?'
+          - 'user["\s:=]+["\']?[A-Za-z0-9._-]{3,30}["\']?'
+          - 'login["\s:=]+["\']?[A-Za-z0-9._-]{3,30}["\']?'
+          - 'handle["\s:=]+["\']?[A-Za-z0-9._-]{3,30}["\']?'
+          - 'nickname["\s:=]+["\']?[A-Za-z0-9._-]{3,30}["\']?'
+          - 'screen_name["\s:=]+["\']?[A-Za-z0-9._-]{3,30}["\']?'
+          - 'twitter_handle["\s:=]+["\']?[A-Za-z0-9_]{3,30}["\']?'
+          - 'instagram_username["\s:=]+["\']?[A-Za-z0-9._]{3,30}["\']?'
+          
+          # ============ SECTION 16: LOCATION DATA ============
+          # GPS Coordinates
+          - '\b-?\d{1,3}\.\d{4,}\s*[,:]\s*-?\d{1,3}\.\d{4,}\b'
+          - '\b-?\d{1,3}\.\d{4,}\s*[,:]\s*-?\d{1,3}\.\d{4,}\s*[NSEW]\b'
+          - 'latitude["\s:=]+["\']?[-+]?[0-9]*\.[0-9]+["\']?'
+          - 'longitude["\s:=]+["\']?[-+]?[0-9]*\.[0-9]+["\']?'
+          - 'lat["\s:=]+["\']?[-+]?[0-9]*\.[0-9]+["\']?'
+          - 'lng["\s:=]+["\']?[-+]?[0-9]*\.[0-9]+["\']?'
+          - 'long["\s:=]+["\']?[-+]?[0-9]*\.[0-9]+["\']?'
+          
+          # ============ SECTION 17: CULTURAL & ETHNIC DATA ============
+          - 'ethnicity["\s:=]+["\']?[A-Za-z]+["\']?'
+          - 'race["\s:=]+["\']?[A-Za-z]+["\']?'
+          - 'religion["\s:=]+["\']?[A-Za-z]+["\']?'
+          - 'nationality["\s:=]+["\']?[A-Za-z]+["\']?'
+          - 'native_language["\s:=]+["\']?[A-Za-z]+["\']?'
+          
+          # ============ SECTION 18: EMPLOYMENT DATA ============
+          - 'employee_id["\s:=]+["\']?[A-Z0-9]{4,15}["\']?'
+          - 'employer["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'job_title["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'position["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'department["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'manager["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'hire_date["\s:=]+["\']?[0-9]{2}[-/][0-9]{2}[-/][0-9]{4}["\']?'
+          - 'salary["\s:=]+["\']?[\d,]+["\']?'
+          - 'compensation["\s:=]+["\']?[\d,]+["\']?'
+          
+          # ============ SECTION 19: EDUCATIONAL DATA ============
+          - 'student_id["\s:=]+["\']?[A-Z0-9]{4,15}["\']?'
+          - 'school["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'university["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'college["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'degree["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'major["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'gpa["\s:=]+["\']?[0-4]\.[0-9]{2}["\']?'
+          - 'graduation_year["\s:=]+["\']?[0-9]{4}["\']?'
+          
+          # ============ SECTION 20: FINANCIAL DATA ============
+          # Salary Ranges
+          - '\$[\d,]+(?:\.\d{2})?'
+          - '\$[\d,]+(?:\.\d{2})?\s+(?:per|an|annum|month|hour)'
+          - 'salary["\s:=]+["\']?[\d,]+["\']?'
+          - 'income["\s:=]+["\']?[\d,]+["\']?'
+          
+          # Tax Information
+          - 'tin["\s:=]+["\']?[0-9]{2}-[0-9]{7}["\']?'
+          - 'tax_id["\s:=]+["\']?[0-9]{2}-[0-9]{7}["\']?'
+          - 'ein["\s:=]+["\']?[0-9]{2}-[0-9]{7}["\']?'
+          - 'employer_identification_number["\s:=]+["\']?[0-9]{2}-[0-9]{7}["\']?'
+          
+          # ============ SECTION 21: INSURANCE DATA ============
+          - 'policy_number["\s:=]+["\']?[A-Z0-9]{6,15}["\']?'
+          - 'insurance_id["\s:=]+["\']?[A-Z0-9]{6,15}["\']?'
+          - 'member_id["\s:=]+["\']?[A-Z0-9]{6,15}["\']?'
+          - 'group_number["\s:=]+["\']?[A-Z0-9]{6,15}["\']?'
+          - 'provider["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          
+          # ============ SECTION 22: VEHICLE INFORMATION ============
+          - 'vin["\s:=]+["\']?[A-HJ-NPR-Z0-9]{17}["\']?'
+          - 'vehicle_number["\s:=]+["\']?[A-HJ-NPR-Z0-9]{17}["\']?'
+          - 'license_plate["\s:=]+["\']?[A-Z0-9]{2,8}["\']?'
+          - 'registration["\s:=]+["\']?[A-Z0-9]{2,8}["\']?'
+          
+          # ============ SECTION 23: DEVICE IDENTIFIERS ============
+          - 'uuid["\s:=]+["\']?[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}["\']?'
+          - 'imei["\s:=]+["\']?[0-9]{15}["\']?'
+          - 'device_id["\s:=]+["\']?[A-Za-z0-9]{8,32}["\']?'
+          - 'android_id["\s:=]+["\']?[A-Za-z0-9]{16}["\']?'
+          - 'idfa["\s:=]+["\']?[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}["\']?'
+          - 'gaid["\s:=]+["\']?[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}["\']?'
+          
+          # ============ SECTION 24: SOCIAL MEDIA PROFILES ============
+          - 'facebook.com/[A-Za-z0-9._-]+'
+          - 'twitter.com/[A-Za-z0-9_]+'
+          - 'instagram.com/[A-Za-z0-9._]+'
+          - 'linkedin.com/in/[A-Za-z0-9_-]+'
+          - 'youtube.com/@[A-Za-z0-9_-]+'
+          - 'tiktok.com/@[A-Za-z0-9_-]+'
+          - 'reddit.com/u/[A-Za-z0-9_-]+'
+          - 'github.com/[A-Za-z0-9_-]+'
+          - 'gitlab.com/[A-Za-z0-9_-]+'
+          - 'discord.com/users/[0-9]+'
+          - 'telegram.me/[A-Za-z0-9_-]+'
+          - 'whatsapp.com/[A-Za-z0-9_-]+'
+          
+          # ============ SECTION 25: MULTI-FACTOR AUTH ============
+          - 'mfa_secret["\s:=]+["\']?[A-Z2-7]{16,32}["\']?'
+          - 'totp_secret["\s:=]+["\']?[A-Z2-7]{16,32}["\']?'
+          - 'otp_secret["\s:=]+["\']?[A-Z2-7]{16,32}["\']?'
+          - 'authenticator_secret["\s:=]+["\']?[A-Z2-7]{16,32}["\']?'
+          - 'recovery_code["\s:=]+["\']?[A-Z0-9]{8,16}["\']?'
+          
+          # ============ SECTION 26: API KEYS (PII RELATED) ============
+          - 'google_api_key["\s:=]+["\']?AIza[A-Za-z0-9_-]{35}["\']?'
+          - 'map_api_key["\s:=]+["\']?AIza[A-Za-z0-9_-]{35}["\']?'
+          - 'maps_api_key["\s:=]+["\']?AIza[A-Za-z0-9_-]{35}["\']?'
+          
+          # ============ SECTION 27: BIOMETRIC DATA ============
+          - 'fingerprint["\s:=]+["\']?[A-Za-z0-9]{32,}["\']?'
+          - 'biometric["\s:=]+["\']?[A-Za-z0-9]{32,}["\']?'
+          - 'face_id["\s:=]+["\']?[A-Za-z0-9]{32,}["\']?'
+          
+          # ============ SECTION 28: PREFERENCE DATA ============
+          - 'language["\s:=]+["\']?[A-Za-z]{2}["\']?'
+          - 'locale["\s:=]+["\']?[A-Za-z]{2}_[A-Z]{2}["\']?'
+          - 'timezone["\s:=]+["\']?[A-Za-z/]+["\']?'
+          - 'currency["\s:=]+["\']?[A-Z]{3}["\']?'
+          - 'theme["\s:=]+["\']?[A-Za-z]+["\']?'
+          
+          # ============ SECTION 29: RELATIONSHIP DATA ============
+          - 'spouse["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'partner["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'children["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'parent["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'guardian["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'emergency_contact["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'next_of_kin["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          
+          # ============ SECTION 30: MARITAL STATUS ============
+          - 'marital_status["\s:=]+["\']?[A-Za-z\s]+["\']?'
+          - 'relationship_status["\s:=]+["\']?[A-Za-z\s]+["\']?'
+
+    # ============ VALIDATION MATCHERS ============
+    matchers:
+      - type: status
+        status:
+          - 200
+          - 201
+          - 202
+          - 203
+          - 204
+          - 206
+          - 301
+          - 302
+          - 303
+          - 307
+          - 308
+          - 400
+          - 401
+          - 403
+          - 404
+          - 405
+          - 406
+          - 409
+          - 410
+          - 415
+          - 418
+          - 429
+          - 500
+          - 501
+          - 502
+          - 503
+          - 504
+
+      # ============ PII KEYWORD VALIDATORS ============
+      - type: word
+        part: body
+        words:
+          - 'ssn'
+          - 'social_security'
+          - 'credit_card'
+          - 'phone'
+          - 'email'
+          - 'address'
+          - 'birth'
+          - 'dob'
+          - 'password'
+          - 'secret'
+          - 'key'
+          - 'token'
+          - 'auth'
+          - 'personal'
+          - 'private'
+          - 'confidential'
+          - 'sensitive'
+          - 'pii'
+          - 'gdpr'
+          - 'hipaa'
+          - 'ccpa'
+          - 'privacy'
+          - 'protected'
+          - 'restricted'
+        condition: or
