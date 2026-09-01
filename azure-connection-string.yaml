@@ -1,0 +1,21 @@
+id: azure-connection-string
+
+info:
+  name: Azure Connection String Disclosure
+  author: reewardius
+  severity: high
+  metadata:
+    verified: true
+    max-request: 1
+  tags: disclosure,azure,exposure,microsoft,database
+
+http:
+  - method: GET
+    path:
+      - '{{BaseURL}}'
+
+    matchers:
+      - type: regex
+        part: body
+        regex:
+          - 'Server=tcp:[A-Za-z0-9.-]+\.database\.windows\.net,1433;Initial Catalog=[A-Za-z0-9._-]+;Persist Security Info=False;User ID=[A-Za-z0-9._-]+;Password=[A-Za-z0-9._-]+'
